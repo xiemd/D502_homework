@@ -3,6 +3,7 @@
 import numpy as np
 from scipy import stats
 import matplotlib.pyplot as plt
+import pandas as pd
 
 x = np.arange(0., 10., 0.2)
 m = len(x)
