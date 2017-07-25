@@ -19,9 +19,10 @@ def get_mnist(batch_size):
 if __name__ == "__main__":
     # testing
     train, val = get_mnist(100)
-    print (train)
+    print (train.getdata())
     batch_t = train.next()
     d = batch_t.data
     l = batch_t.label
     print ("data", d)
-    print (val)
+    print ("label", l)
+    print (val.getdata())

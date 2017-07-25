@@ -45,19 +45,25 @@ def get_mlp_sym():
     return mlp
 
 
-def conv_layer(if_pool=False):
+def conv_layer(input_layer, kernel=(3, 3), num_filter=64, activation='relu', pool_stride=(2, 2), pool=False, BN=False):
     """
     :return: a single convolution layer symbol
     """
     # todo: Design the simplest convolution layer
+    l = mx.sym.Convolution(data=input_layer, kernel=kernel, num_filter=num_filter, pad=(1, 1))
+    if BN:
+        l = mx.sym.BatchNorm(l)
+    if activation is not None:
+        l = mx.sym.Activation(data=l, act_type=activation)
+    if pool:
+        l = mx.sym.Pooling(data=l, pool_type="max", stride=pool_stride, kernel=(2, 2))
+    return l
     # Find the doc of mx.sym.Convolution by help command
     # Do you need BatchNorm?
     # Do you need pooling?
     # What is the expected output shape?
 
 
-
-    pass
 
 
 # Optional
@@ -73,10 +79,22 @@ def get_conv_sym():
 
     """
     :return: symbol of a convolutional neural network
-    """`
+    """
     data = mx.sym.Variable("data")
     # todo: design the CNN architecture
+    conv1 = conv_layer(data, num_filter=128, pool=True, BN=True)
+    conv2 = conv_layer(conv1, num_filter=64, pool=True, BN=True)
+    flat = mx.sym.flatten(data=conv2)
+    fc1 = mx.symbol.FullyConnected(data=flat, num_hidden=100)
+    ac1 = mx.sym.Activation(data=fc1, act_type="relu")
+    fc2 = mx.sym.FullyConnected(data=ac1, num_hidden=10)
+    # softmax loss
+    l = mx.sym.SoftmaxOutput(data=fc2, name='softmax')
+
+    return l
+
+
+
     # How deep the network do you want? like 4 or 5
     # How wide the network do you want? like 32/64/128 kernels per layer
     # How is the convolution like? Normal CNN? Inception Module? VGG like?
-    pass
