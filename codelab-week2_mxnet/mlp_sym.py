@@ -70,7 +70,7 @@ def conv_layer(input_layer, kernel=(3, 3), num_filter=64, activation='relu', poo
 def inception_layer():
     """
     Implement the inception layer in week3 class
-    :return: the symbol of a inception layer我们的攻城狮正在努力修复这个bug中
+    :return: the symbol of a inception layer
     """
     pass
 
